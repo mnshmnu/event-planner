@@ -1,8 +1,15 @@
 package services
 
-import "event-planner/internal/models"
+import (
+	"context"
+	"event-planner/internal/entities"
+	"event-planner/internal/models"
+)
 
-type Service interface{}
+type Service interface {
+	RegisterUser(ctx context.Context, user *entities.User) error
+	AuthenticateUser(ctx context.Context, email, password string) (string, error)
+}
 
 type service struct {
 	models models.Model

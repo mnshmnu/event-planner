@@ -16,5 +16,11 @@ func Init() (conn *pgxpool.Pool, err error) {
 		return nil, err
 	}
 
+	err = InitTables(dbpool)
+	if err != nil {
+		zap.S().Errorf("failed to initialize tables: %v", err)
+		return nil, err
+	}
+
 	return dbpool, nil
 }
