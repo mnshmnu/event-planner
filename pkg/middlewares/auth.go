@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"event-planner/internal/entities"
 	"net/http"
 	"os"
 	"strings"
@@ -24,6 +25,8 @@ func returnResp(w http.ResponseWriter, message string, statusCode int, err error
 
 type contextKey string
 
+var JWTContextKey = contextKey(os.Getenv("JWT_CONTEXT_KEY"))
+
 func JWTAuthenticate() func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -34,26 +37,39 @@ func JWTAuthenticate() func(next http.Handler) http.Handler {
 			}
 
 			tokenStr := strings.Split(jwtHeader[0], " ")
+			jwtSecret := os.Getenv("JWT_SECRET")
 			if len(tokenStr) != 2 {
 				returnResp(w, "Invalid JWT token provided", http.StatusUnauthorized, errors.New("invalid JWT token"))
 				return
 			}
-			zap.S().Infow("JWT token", "token", tokenStr[1])
 
-			token, err := jwt.Parse(tokenStr[1], func(token *jwt.Token) (interface{}, error) {
-				return []byte(os.Getenv("JWT_SECRET")), nil
+			token, err := jwt.ParseWithClaims(tokenStr[1], &entities.UserClaims{}, func(token *jwt.Token) (interface{}, error) {
+				return []byte(jwtSecret), nil
 			})
 			if err != nil || !token.Valid {
 				returnResp(w, "Failed to parse JWT", http.StatusUnauthorized, err)
 				return
 			}
 
-			jwtKey := contextKey(os.Getenv("JWT_CONTEXT_KEY"))
+			claims, ok := token.Claims.(*entities.UserClaims)
+			if !ok {
+				returnResp(w, "Failed to parse JWT claims", http.StatusUnauthorized, errors.New("failed to parse JWT claims"))
+				return
+			}
 
-			ctx := context.WithValue(r.Context(), jwtKey, token)
+			ctx := context.WithValue(r.Context(), JWTContextKey, claims)
 			r = r.WithContext(ctx)
 
 			next.ServeHTTP(w, r)
 		})
 	}
+}
+
+// GetCurrentUser takes out user details from context and returns it
+func GetCurrentUser(ctx context.Context) *entities.UserClaims {
+	user := ctx.Value(JWTContextKey).(*entities.UserClaims)
+	if user == nil {
+		return nil
+	}
+	return user
 }
