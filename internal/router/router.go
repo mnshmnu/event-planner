@@ -29,12 +29,13 @@ func New(h handlers.Handlers) http.Handler {
 	})
 
 	r.With(middlewares.JWTAuthenticate()).Route("/", func(r chi.Router) {
-		r.Route("/event", func(r chi.Router) {
-			// r.Post("/create", h.CreateEvent)
-		})
-
 		r.Route("/user/availability", func(r chi.Router) {
 			r.Post("/add", h.AddAvailability)
+			r.Post("/get", h.GetAvailableSlotsHandler)
+		})
+
+		r.Route("/meeting", func(r chi.Router) {
+			r.Post("/add", h.ScheduleMeeting)
 			r.Post("/get", h.GetAvailableSlotsHandler)
 		})
 	})

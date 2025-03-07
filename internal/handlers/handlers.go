@@ -16,6 +16,9 @@ type Handlers interface {
 	// availability
 	AddAvailability(w http.ResponseWriter, r *http.Request)
 	GetAvailableSlotsHandler(w http.ResponseWriter, r *http.Request)
+
+	// meeting
+	ScheduleMeeting(w http.ResponseWriter, r *http.Request)
 }
 
 type handler struct {
