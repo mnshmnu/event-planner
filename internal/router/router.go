@@ -8,7 +8,6 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
-	"go.uber.org/zap"
 )
 
 func New(h handlers.Handlers) http.Handler {
@@ -30,8 +29,13 @@ func New(h handlers.Handlers) http.Handler {
 	})
 
 	r.With(middlewares.JWTAuthenticate()).Route("/", func(r chi.Router) {
-		r.Get("/events", func(w http.ResponseWriter, r *http.Request) {
-			zap.S().Info("GET /events")
+		r.Route("/event", func(r chi.Router) {
+			// r.Post("/create", h.CreateEvent)
+		})
+
+		r.Route("/user/availability", func(r chi.Router) {
+			r.Post("/add", h.AddAvailability)
+			r.Post("/get", h.GetAvailableSlotsHandler)
 		})
 	})
 

@@ -6,8 +6,16 @@ import (
 )
 
 type Handlers interface {
+
+	// user handlers
+
+	// auth
 	Register(w http.ResponseWriter, r *http.Request)
 	Login(w http.ResponseWriter, r *http.Request)
+
+	// availability
+	AddAvailability(w http.ResponseWriter, r *http.Request)
+	GetAvailableSlotsHandler(w http.ResponseWriter, r *http.Request)
 }
 
 type handler struct {

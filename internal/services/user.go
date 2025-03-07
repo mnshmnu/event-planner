@@ -6,8 +6,10 @@ import (
 	"errors"
 	"event-planner/internal/entities"
 	"event-planner/pkg/auth"
+	"event-planner/pkg/middlewares"
 	"fmt"
 
+	"go.uber.org/zap"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -47,4 +49,12 @@ func (s *service) AuthenticateUser(ctx context.Context, email, password string) 
 	})
 
 	return token, nil
+}
+
+func (h *service) AddAvailability(ctx context.Context, availability *entities.Availability) error {
+
+	curUser := middlewares.GetCurrentUser(ctx)
+
+	zap.S().Infow("Current User", "user", curUser.Email, "ctx", ctx)
+	return nil
 }

@@ -4,11 +4,14 @@ import (
 	"encoding/json"
 	"event-planner/internal/entities"
 	"net/http"
+
+	"go.uber.org/zap"
 )
 
 func (h *handler) Register(w http.ResponseWriter, r *http.Request) {
 	var user entities.User
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
+		zap.S().Debugw("Failed to decode request body", "err", err)
 		http.Error(w, "Invalid request", http.StatusBadRequest)
 		return
 	}
@@ -30,6 +33,7 @@ func (h *handler) Login(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&credentials); err != nil {
+		zap.S().Debugw("Failed to decode request body", "err", err)
 		http.Error(w, "Invalid request", http.StatusBadRequest)
 		return
 	}
