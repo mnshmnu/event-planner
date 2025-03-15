@@ -6,6 +6,7 @@ import (
 	"event-planner/internal/models"
 	"event-planner/internal/router"
 	"event-planner/internal/services"
+	"event-planner/pkg/auth"
 	"event-planner/pkg/logger"
 	"log"
 	"net/http"
@@ -36,7 +37,8 @@ func main() {
 	zap.S().Infow("Connected to postgres")
 
 	model := models.New(db)
-	service := services.New(model)
+	auth := auth.New()
+	service := services.New(model, auth)
 	handler := handlers.New(service)
 
 	router := router.New(handler)

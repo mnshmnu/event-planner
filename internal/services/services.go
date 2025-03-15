@@ -4,6 +4,7 @@ import (
 	"context"
 	"event-planner/internal/entities"
 	"event-planner/internal/models"
+	"event-planner/pkg/auth"
 	"time"
 )
 
@@ -19,10 +20,12 @@ type Service interface {
 
 type service struct {
 	models models.Model
+	auth   auth.Auth
 }
 
-func New(m models.Model) Service {
+func New(m models.Model, auth auth.Auth) Service {
 	return &service{
 		models: m,
+		auth:   auth,
 	}
 }

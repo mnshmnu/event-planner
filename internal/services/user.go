@@ -5,16 +5,14 @@ import (
 	"database/sql"
 	"errors"
 	"event-planner/internal/entities"
-	"event-planner/pkg/auth"
 	"event-planner/pkg/middlewares"
 	"fmt"
 
 	"go.uber.org/zap"
-	"golang.org/x/crypto/bcrypt"
 )
 
 func (s *service) RegisterUser(ctx context.Context, user *entities.User) error {
-	hPass, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	hPass, err := s.auth.GenerateHash(user.Password)
 	if err != nil {
 		return err
 	}
@@ -38,15 +36,19 @@ func (s *service) AuthenticateUser(ctx context.Context, email, password string) 
 		return "", err
 	}
 
-	if err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password)); err != nil {
+	isValid, _ := s.auth.CompareHash([]byte(hashedPassword), []byte(password))
+	if !isValid {
 		return "", errors.New("invalid credentials")
 	}
 
-	token, err := auth.GenerateJWTToken(map[string]interface{}{
+	token, err := s.auth.GenerateJWTToken(map[string]interface{}{
 		"id":    user.ID,
 		"email": user.Email,
 		"name":  user.Name,
 	})
+	if err != nil {
+		return "", err
+	}
 
 	return token, nil
 }
