@@ -15,6 +15,7 @@ type Service interface {
 	AddAvailability(ctx context.Context, availability *entities.Availability) error
 	GetAvailableSlots(ctx context.Context, duration int) (map[time.Time][]int, error)
 
+	GetMeetings(ctx context.Context) ([]*entities.Meeting, error)
 	ScheduleMeeting(ctx context.Context, organizerID int, duration int) (*entities.Meeting, error)
 }
 

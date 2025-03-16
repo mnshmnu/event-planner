@@ -3,9 +3,9 @@ package entities
 import "github.com/golang-jwt/jwt/v5"
 
 type UserClaims struct {
-	ID    int    `json:"id"`
-	Email string `json:"email"`
-	Name  string `json:"name"`
+	UserID int    `json:"userID"`
+	Email  string `json:"email"`
+	Name   string `json:"name"`
 	jwt.RegisteredClaims
 }
 

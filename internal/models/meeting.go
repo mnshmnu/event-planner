@@ -34,3 +34,29 @@ func (m *model) CreateMeeting(ctx context.Context, meeting *entities.Meeting) er
 
 	return tx.Commit(ctx)
 }
+
+func (m *model) GetMeetings(ctx context.Context) ([]*entities.Meeting, error) {
+	var meetings []*entities.Meeting
+	rows, err := m.db.Query(ctx, `
+		SELECT m.id, m.organizer_id, m.start_time, m.end_time, array_agg(mp.user_id) as participants
+		FROM meetings m
+		LEFT JOIN meeting_participants mp ON m.id = mp.meeting_id
+		GROUP BY m.id
+	`)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var meeting entities.Meeting
+		var participants []int
+		if err := rows.Scan(&meeting.ID, &meeting.OrganizerID, &meeting.StartTime, &meeting.EndTime, &participants); err != nil {
+			return nil, err
+		}
+		meeting.Participants = participants
+		meetings = append(meetings, &meeting)
+	}
+
+	return meetings, nil
+}

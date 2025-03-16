@@ -15,9 +15,10 @@ type Handlers interface {
 
 	// availability
 	AddAvailability(w http.ResponseWriter, r *http.Request)
-	GetAvailableSlotsHandler(w http.ResponseWriter, r *http.Request)
+	GetAvailableSlots(w http.ResponseWriter, r *http.Request)
 
 	// meeting
+	GetMeetings(w http.ResponseWriter, r *http.Request)
 	ScheduleMeeting(w http.ResponseWriter, r *http.Request)
 }
 

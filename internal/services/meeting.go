@@ -52,3 +52,12 @@ func (s *service) ScheduleMeeting(ctx context.Context, organizerID int, duration
 
 	return meeting, nil
 }
+
+func (s *service) GetMeetings(ctx context.Context) ([]*entities.Meeting, error) {
+	meetings, err := s.models.GetMeetings(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	return meetings, nil
+}

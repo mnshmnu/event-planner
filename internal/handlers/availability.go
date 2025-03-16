@@ -8,7 +8,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func (h *handler) GetAvailableSlotsHandler(w http.ResponseWriter, r *http.Request) {
+func (h *handler) GetAvailableSlots(w http.ResponseWriter, r *http.Request) {
 	var request struct {
 		Duration int `json:"duration"`
 	}
