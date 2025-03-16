@@ -17,11 +17,13 @@ import (
 )
 
 func main() {
-	if err := godotenv.Load(); err != nil {
-		log.Fatalln("Error loading env file", err)
-	}
-
 	env := os.Getenv("ENV")
+
+	if env == "LOCAL" {
+		if err := godotenv.Load(); err != nil {
+			log.Fatalln("Error loading env file", err)
+		}
+	}
 
 	logger, err := logger.Init(env)
 	if err != nil {
@@ -34,7 +36,7 @@ func main() {
 		os.Exit(1)
 	}
 	defer db.Close()
-	zap.S().Infow("Connected to postgres")
+	zap.S().Infow("Connected to postgres server")
 
 	model := models.New(db)
 	auth := auth.New()

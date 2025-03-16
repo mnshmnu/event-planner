@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_USER: mnsh
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: local
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+  app:
+    build: .
+    container_name: event-planner
+    environment:
+      - ENV=DEV
+      - JWT_CONTEXT_KEY=jwt
+      - CONNECTION_STRING=postgres://mnsh:root@db:5432/local?sslmode=disable
+      - JWT_SECRET=secret
+      - PORT=8081
+    ports:
+      - "5110:8081"
+    depends_on:
+      - db
+    restart: always
+
+volumes:
+  postgres_data:
