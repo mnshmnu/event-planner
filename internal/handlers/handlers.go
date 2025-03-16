@@ -14,12 +14,18 @@ type Handlers interface {
 	Login(w http.ResponseWriter, r *http.Request)
 
 	// availability
-	AddAvailability(w http.ResponseWriter, r *http.Request)
-	GetAvailableSlots(w http.ResponseWriter, r *http.Request)
+	CreateAvailability(w http.ResponseWriter, r *http.Request)
+	GetAvailability(w http.ResponseWriter, r *http.Request)
+	UpdateAvailability(w http.ResponseWriter, r *http.Request)
+	DeleteAvailability(w http.ResponseWriter, r *http.Request)
 
 	// meeting
-	GetMeetings(w http.ResponseWriter, r *http.Request)
-	ScheduleMeeting(w http.ResponseWriter, r *http.Request)
+	CreateEvent(w http.ResponseWriter, r *http.Request)
+	GetEventByID(w http.ResponseWriter, r *http.Request)
+	UpdateEvent(w http.ResponseWriter, r *http.Request)
+	DeleteEvent(w http.ResponseWriter, r *http.Request)
+	GetAllEventsByUser(w http.ResponseWriter, r *http.Request)
+	ConfirmFinalSlot(w http.ResponseWriter, r *http.Request)
 }
 
 type handler struct {

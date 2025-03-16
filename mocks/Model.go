@@ -14,24 +14,6 @@ type Model struct {
 	mock.Mock
 }
 
-// ConfirmFinalSlot provides a mock function with given fields: ctx, eventID, slotID
-func (_m *Model) ConfirmFinalSlot(ctx context.Context, eventID int64, slotID int64) error {
-	ret := _m.Called(ctx, eventID, slotID)
-
-	if len(ret) == 0 {
-		panic("no return value specified for ConfirmFinalSlot")
-	}
-
-	var r0 error
-	if rf, ok := ret.Get(0).(func(context.Context, int64, int64) error); ok {
-		r0 = rf(ctx, eventID, slotID)
-	} else {
-		r0 = ret.Error(0)
-	}
-
-	return r0
-}
-
 // CreateAvailability provides a mock function with given fields: ctx, availability
 func (_m *Model) CreateAvailability(ctx context.Context, availability *entities.ParticipantAvailability) (int64, error) {
 	ret := _m.Called(ctx, availability)
@@ -114,24 +96,6 @@ func (_m *Model) CreateEventSlot(ctx context.Context, slot *entities.EventSlot) 
 	}
 
 	return r0, r1
-}
-
-// CreateEventSlots provides a mock function with given fields: ctx, slots
-func (_m *Model) CreateEventSlots(ctx context.Context, slots []entities.EventSlot) error {
-	ret := _m.Called(ctx, slots)
-
-	if len(ret) == 0 {
-		panic("no return value specified for CreateEventSlots")
-	}
-
-	var r0 error
-	if rf, ok := ret.Get(0).(func(context.Context, []entities.EventSlot) error); ok {
-		r0 = rf(ctx, slots)
-	} else {
-		r0 = ret.Error(0)
-	}
-
-	return r0
 }
 
 // CreateUser provides a mock function with given fields: ctx, user, hPass
@@ -343,34 +307,6 @@ func (_m *Model) GetUserByEmail(ctx context.Context, email string) (*entities.Us
 	}
 
 	return r0, r1, r2
-}
-
-// IsSlotPartOfEvent provides a mock function with given fields: ctx, slotID, eventID
-func (_m *Model) IsSlotPartOfEvent(ctx context.Context, slotID int64, eventID int64) (bool, error) {
-	ret := _m.Called(ctx, slotID, eventID)
-
-	if len(ret) == 0 {
-		panic("no return value specified for IsSlotPartOfEvent")
-	}
-
-	var r0 bool
-	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, int64, int64) (bool, error)); ok {
-		return rf(ctx, slotID, eventID)
-	}
-	if rf, ok := ret.Get(0).(func(context.Context, int64, int64) bool); ok {
-		r0 = rf(ctx, slotID, eventID)
-	} else {
-		r0 = ret.Get(0).(bool)
-	}
-
-	if rf, ok := ret.Get(1).(func(context.Context, int64, int64) error); ok {
-		r1 = rf(ctx, slotID, eventID)
-	} else {
-		r1 = ret.Error(1)
-	}
-
-	return r0, r1
 }
 
 // UpdateAvailability provides a mock function with given fields: ctx, availability

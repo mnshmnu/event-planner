@@ -14,36 +14,35 @@ func InitTables(db *pgxpool.Pool) error {
 		email VARCHAR(255) UNIQUE NOT NULL,
 		password TEXT NOT NULL
 	);
-	
+
 	CREATE TABLE IF NOT EXISTS events (
 		id SERIAL PRIMARY KEY,
-		title VARCHAR(255) NOT NULL,
-		description TEXT,
-		duration INT NOT NULL
+		title TEXT NOT NULL,
+		created_by INTEGER REFERENCES users(id),
+		duration INTEGER NOT NULL,
+		created_at TIMESTAMP DEFAULT NOW()
+		confirmed_slot_id BIGINT REFERENCES event_slots(id)
 	);
 
-	CREATE TABLE IF NOT EXISTS availabilities (
+	CREATE TABLE IF NOT EXISTS event_slots (
 		id SERIAL PRIMARY KEY,
-		user_id INT NOT NULL,
+		event_id INTEGER REFERENCES events(id) ON DELETE CASCADE,
 		start_time TIMESTAMP NOT NULL,
-		end_time TIMESTAMP NOT NULL,
-		FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+		end_time TIMESTAMP NOT NULL
 	);
 
-	CREATE TABLE IF NOT EXISTS meetings (
+	CREATE TABLE IF NOT EXISTS event_participants (
 		id SERIAL PRIMARY KEY,
-		organizer_id INT NOT NULL,
-		start_time TIMESTAMP NOT NULL,
-		end_time TIMESTAMP NOT NULL,
-		FOREIGN KEY (organizer_id) REFERENCES users(id) ON DELETE CASCADE
+		event_id INTEGER REFERENCES events(id) ON DELETE CASCADE,
+		user_id INTEGER REFERENCES users(id) ON DELETE CASCADE
 	);
 
-	CREATE TABLE IF NOT EXISTS meeting_participants (
-		meeting_id INT NOT NULL,
-		user_id INT NOT NULL,
-		PRIMARY KEY (meeting_id, user_id),
-		FOREIGN KEY (meeting_id) REFERENCES meetings(id) ON DELETE CASCADE,
-		FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+	CREATE TABLE IF NOT EXISTS participant_availabilities (
+		id SERIAL PRIMARY KEY,
+		event_id INTEGER REFERENCES events(id) ON DELETE CASCADE,
+		user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+		start_time TIMESTAMP NOT NULL,
+		end_time TIMESTAMP NOT NULL
 	);
 	`
 

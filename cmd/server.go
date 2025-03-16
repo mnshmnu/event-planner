@@ -19,7 +19,7 @@ import (
 func main() {
 	env := os.Getenv("ENV")
 
-	if env == "LOCAL" {
+	if env == "" {
 		if err := godotenv.Load(); err != nil {
 			log.Fatalln("Error loading env file", err)
 		}

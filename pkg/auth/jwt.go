@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"maps"
 	"os"
 	"time"
 
@@ -11,9 +12,8 @@ func (a *auth) GenerateJWTToken(payload map[string]any) (string, error) {
 	claims := jwt.MapClaims{
 		"exp": time.Now().Add(time.Hour * 72).Unix(), // 3 days
 	}
-	for k, v := range payload {
-		claims[k] = v
-	}
+
+	maps.Copy(claims, payload)
 
 	// Create token
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)

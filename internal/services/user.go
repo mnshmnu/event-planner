@@ -5,10 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"event-planner/internal/entities"
-	"event-planner/pkg/middlewares"
 	"fmt"
-
-	"go.uber.org/zap"
 )
 
 func (s *service) RegisterUser(ctx context.Context, user *entities.User) error {
@@ -42,21 +39,13 @@ func (s *service) AuthenticateUser(ctx context.Context, email, password string) 
 	}
 
 	token, err := s.auth.GenerateJWTToken(map[string]interface{}{
-		"id":    user.ID,
-		"email": user.Email,
-		"name":  user.Name,
+		"userID": user.ID,
+		"email":  user.Email,
+		"name":   user.Name,
 	})
 	if err != nil {
 		return "", err
 	}
 
 	return token, nil
-}
-
-func (h *service) AddAvailability(ctx context.Context, availability *entities.Availability) error {
-
-	curUser := middlewares.GetCurrentUser(ctx)
-
-	zap.S().Infow("Current User", "user", curUser.Email, "ctx", ctx)
-	return nil
 }
