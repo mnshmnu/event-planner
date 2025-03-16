@@ -13,19 +13,19 @@ var (
 type Event struct {
 	ID              int64     `json:"id"`
 	Title           string    `json:"title"`
-	CreatedBy       int64     `json:"created_by"`
-	DurationMinutes int       `json:"duration_minutes"`
-	CreatedAt       time.Time `json:"created_at"`
+	CreatedBy       int64     `json:"createdBy"`
+	DurationMinutes int       `json:"durationMinutes"`
+	CreatedAt       time.Time `json:"createdAt"`
 }
 type EventSlot struct {
 	ID        int64     `json:"id"`
-	EventID   int64     `json:"event_id"`
-	StartTime time.Time `json:"start_time"`
-	EndTime   time.Time `json:"end_time"`
+	EventID   int64     `json:"eventID"`
+	StartTime time.Time `json:"startTime"`
+	EndTime   time.Time `json:"endTime"`
 }
 
 type EventParticipant struct {
 	ID      int64 `json:"id"`
-	EventID int64 `json:"event_id"`
-	UserID  int64 `json:"user_id"`
+	EventID int64 `json:"eventID"`
+	UserID  int64 `json:"userID"`
 }

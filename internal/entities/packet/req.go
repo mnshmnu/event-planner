@@ -22,18 +22,18 @@ type CreateAvailabilityReq struct {
 
 type CreateEventReq struct {
 	Title           string               `json:"title"`
-	CreatedBy       int64                `json:"created_by"`
-	DurationMinutes int                  `json:"duration_minutes"`
+	CreatedBy       int64                `json:"createdBy"`
+	DurationMinutes int                  `json:"durationMinutes"`
 	Slots           []entities.EventSlot `json:"slots"`
 }
 
 type UpdateEventReq struct {
 	ID              int64  `json:"id"`
 	Title           string `json:"title"`
-	DurationMinutes int    `json:"duration_minutes"`
+	DurationMinutes int    `json:"durationMinutes"`
 }
 
 type ConfirmSlotReq struct {
-	EventID int64 `json:"event_id"`
-	SlotID  int64 `json:"slot_id"`
+	EventID int64 `json:"eventID"`
+	SlotID  int64 `json:"slotID"`
 }

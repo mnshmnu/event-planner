@@ -10,15 +10,15 @@ type EventSuggestedSlot struct {
 }
 
 type CreateEventResp struct {
-	EventID   int64                  `json:"event_id"`
-	SlotStats []SlotAvailabilityStat `json:"slot_stats"`
+	EventID   int64                  `json:"eventID"`
+	SlotStats []SlotAvailabilityStat `json:"slotStats"`
 	Message   string                 `json:"message"`
 }
 
 type SlotAvailabilityStat struct {
-	SlotID                 int64     `json:"slot_id"`
-	StartTime              time.Time `json:"start_time"`
-	EndTime                time.Time `json:"end_time"`
-	ParticipantCount       int       `json:"participant_count"`
-	PossibleParticipantIDs []int64   `json:"possible_participant_ids"`
+	SlotID                 int64     `json:"slotID"`
+	StartTime              time.Time `json:"startTime"`
+	EndTime                time.Time `json:"endTime"`
+	ParticipantCount       int       `json:"participantCount"`
+	PossibleParticipantIDs []int64   `json:"possibleParticipantIDs"`
 }

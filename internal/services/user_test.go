@@ -7,6 +7,7 @@ import (
 	"event-planner/internal/entities"
 	"event-planner/internal/models"
 	"event-planner/internal/models/mocks"
+	"event-planner/pkg/auth"
 	authMock "event-planner/pkg/auth/mocks"
 	"testing"
 
@@ -37,7 +38,7 @@ func Test_service_RegisterUser(t *testing.T) {
 
 	type fields struct {
 		models models.Model
-		auth   *authMock.Auth
+		auth   auth.Auth
 	}
 	type args struct {
 		ctx  context.Context
@@ -150,7 +151,7 @@ func Test_service_AuthenticateUser(t *testing.T) {
 
 	type fields struct {
 		models models.Model
-		auth   *authMock.Auth
+		auth   auth.Auth
 	}
 	type args struct {
 		ctx      context.Context
