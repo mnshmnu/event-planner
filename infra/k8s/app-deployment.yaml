@@ -32,7 +32,7 @@ spec:
               value: secret
             - name: PORT
               value: "8081"
-          image: app
+          image: maneeshmanu2000/event-planner-app:latest
           name: event-planner
           ports:
             - containerPort: 8081
