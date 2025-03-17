@@ -7,11 +7,11 @@ import (
 
 func (m *model) CreateAvailability(ctx context.Context, availability *entities.ParticipantAvailability) (int64, error) {
 	query := `
-        INSERT INTO participant_availabilities (event_id, user_id, start_time, end_time)
+        INSERT INTO participant_availabilities (user_id, start_time, end_time)
         VALUES ($1, $2, $3, $4)
         RETURNING id;
     `
-	err := m.db.QueryRow(ctx, query, availability.EventID, availability.UserID, availability.StartTime, availability.EndTime).
+	err := m.db.QueryRow(ctx, query, availability.UserID, availability.StartTime, availability.EndTime).
 		Scan(&availability.ID)
 	return availability.ID, err
 }
@@ -19,12 +19,12 @@ func (m *model) CreateAvailability(ctx context.Context, availability *entities.P
 // GetAvailabilityByID fetches a single availability by ID
 func (m *model) GetAvailabilityByID(ctx context.Context, id int64) (*entities.ParticipantAvailability, error) {
 	query := `
-        SELECT id, event_id, user_id, start_time, end_time
+        SELECT id, user_id, start_time, end_time
         FROM participant_availabilities
         WHERE id = $1;
     `
 	var a entities.ParticipantAvailability
-	err := m.db.QueryRow(ctx, query, id).Scan(&a.ID, &a.EventID, &a.UserID, &a.StartTime, &a.EndTime)
+	err := m.db.QueryRow(ctx, query, id).Scan(&a.ID, &a.UserID, &a.StartTime, &a.EndTime)
 	if err != nil {
 		return nil, err
 	}
@@ -52,7 +52,7 @@ func (m *model) DeleteAvailability(ctx context.Context, id int64) error {
 // GetAvailabilitiesByEvent fetches all availabilities for a given event
 func (m *model) GetAvailabilitiesByEvent(ctx context.Context, eventID int64) ([]entities.ParticipantAvailability, error) {
 	query := `
-        SELECT id, event_id, user_id, start_time, end_time
+        SELECT id, user_id, start_time, end_time
         FROM participant_availabilities
         WHERE event_id = $1;
     `
@@ -65,7 +65,7 @@ func (m *model) GetAvailabilitiesByEvent(ctx context.Context, eventID int64) ([]
 	var availabilities []entities.ParticipantAvailability
 	for rows.Next() {
 		var avail entities.ParticipantAvailability
-		if err := rows.Scan(&avail.ID, &avail.EventID, &avail.UserID, &avail.StartTime, &avail.EndTime); err != nil {
+		if err := rows.Scan(&avail.ID, &avail.UserID, &avail.StartTime, &avail.EndTime); err != nil {
 			return nil, err
 		}
 		availabilities = append(availabilities, avail)

@@ -34,7 +34,6 @@ func TestService_CreateAvailability(t *testing.T) {
 		{
 			name: "valid availability - success",
 			input: &entities.ParticipantAvailability{
-				EventID:   1,
 				UserID:    2,
 				StartTime: now,
 				EndTime:   now.Add(1 * time.Hour),
@@ -48,7 +47,6 @@ func TestService_CreateAvailability(t *testing.T) {
 		{
 			name: "invalid time range - end time before start",
 			input: &entities.ParticipantAvailability{
-				EventID:   1,
 				UserID:    2,
 				StartTime: now,
 				EndTime:   now.Add(-1 * time.Hour),
@@ -60,7 +58,6 @@ func TestService_CreateAvailability(t *testing.T) {
 		{
 			name: "model error",
 			input: &entities.ParticipantAvailability{
-				EventID:   1,
 				UserID:    2,
 				StartTime: now,
 				EndTime:   now.Add(1 * time.Hour),
@@ -151,7 +148,6 @@ func TestService_UpdateAvailability(t *testing.T) {
 			name: "successful update",
 			input: &entities.ParticipantAvailability{
 				ID:        10,
-				EventID:   1,
 				UserID:    2,
 				StartTime: now,
 				EndTime:   now.Add(1 * time.Hour),
@@ -175,7 +171,6 @@ func TestService_UpdateAvailability(t *testing.T) {
 			name: "model error",
 			input: &entities.ParticipantAvailability{
 				ID:        10,
-				EventID:   1,
 				UserID:    2,
 				StartTime: now,
 				EndTime:   now.Add(1 * time.Hour),
@@ -260,11 +255,11 @@ func TestService_GetAvailabilitiesByEvent(t *testing.T) {
 			mockSetup: func() {
 				mockModel.On("GetAvailabilitiesByEvent", mock.Anything, int64(1001)).
 					Return([]entities.ParticipantAvailability{
-						{ID: 1, EventID: 1001}, {ID: 2, EventID: 1001},
+						{ID: 1}, {ID: 2},
 					}, nil).Once()
 			},
 			expectedResp: []entities.ParticipantAvailability{
-				{ID: 1, EventID: 1001}, {ID: 2, EventID: 1001},
+				{ID: 1}, {ID: 2},
 			},
 			expectError: false,
 		},

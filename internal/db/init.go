@@ -20,7 +20,7 @@ func InitTables(db *pgxpool.Pool) error {
 		title TEXT NOT NULL,
 		created_by INTEGER REFERENCES users(id),
 		duration INTEGER NOT NULL,
-		created_at TIMESTAMP DEFAULT NOW()
+		created_at TIMESTAMP DEFAULT NOW(),
 		confirmed_slot_id BIGINT REFERENCES event_slots(id)
 	);
 

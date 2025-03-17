@@ -12,7 +12,6 @@ type UpdateAvailabilityReq struct {
 }
 
 type CreateAvailabilityReq struct {
-	EventID   int64     `json:"eventID"`
 	UserID    int64     `json:"userID"`
 	StartTime time.Time `json:"startTime"`
 	EndTime   time.Time `json:"endTime"`

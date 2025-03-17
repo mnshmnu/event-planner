@@ -22,7 +22,6 @@ func (h *handler) CreateAvailability(w http.ResponseWriter, r *http.Request) {
 	}
 
 	a := entities.ParticipantAvailability{
-		EventID:   input.EventID,
 		UserID:    input.UserID,
 		StartTime: input.StartTime,
 		EndTime:   input.EndTime,

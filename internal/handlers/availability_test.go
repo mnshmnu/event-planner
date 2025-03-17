@@ -54,14 +54,12 @@ func Test_handler_CreateAvailability(t *testing.T) {
 		{
 			name: "successful availability creation",
 			requestBody: map[string]interface{}{
-				"eventID":   1,
 				"userID":    1,
 				"startTime": "2021-01-01T00:00:00Z",
 				"endTime":   "2021-01-01T01:00:00Z",
 			},
 			mockSetup: func(s *svcMock.Service) {
 				s.On("CreateAvailability", mock.Anything, &entities.ParticipantAvailability{
-					EventID:   1,
 					UserID:    1,
 					StartTime: startTime,
 					EndTime:   endTime,
@@ -80,7 +78,6 @@ func Test_handler_CreateAvailability(t *testing.T) {
 		{
 			name: "service layer error",
 			requestBody: map[string]interface{}{
-				"eventID":   2,
 				"userID":    1,
 				"startTime": "2021-01-01T00:00:00Z",
 				"endTime":   "2021-01-01T01:00:00Z",
@@ -138,14 +135,13 @@ func Test_handler_GetAvailability(t *testing.T) {
 			mockSetup: func(s *svcMock.Service) {
 				s.On("GetAvailabilityByID", mock.Anything, int64(1)).Return(&entities.ParticipantAvailability{
 					ID:        1,
-					EventID:   2,
 					UserID:    3,
 					StartTime: time.Date(2025, 3, 16, 23, 46, 25, 301344000, time.FixedZone("IST", 5*60*60+30*60)),
 					EndTime:   time.Date(2025, 3, 17, 0, 46, 25, 301344000, time.FixedZone("IST", 5*60*60+30*60)),
 				}, nil).Once()
 			},
 			expectedStatus:   http.StatusOK,
-			expectedResponse: `{"id":1,"eventID":2,"userID":3,"startTime":"2025-03-16T23:46:25.301344+05:30","endTime":"2025-03-17T00:46:25.301344+05:30"}`,
+			expectedResponse: `{"id":1,"userID":3,"startTime":"2025-03-16T23:46:25.301344+05:30","endTime":"2025-03-17T00:46:25.301344+05:30"}`,
 		},
 		{
 			name:             "invalid id in query param",
